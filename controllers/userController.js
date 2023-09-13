@@ -16,9 +16,6 @@ module.exports = {
       const user = await User.findOne({ _id: req.params.userId })
       .populate({ path: 'thoughts', select: '-__v' })
       .populate({ path: 'friends', select: '-__v' });
-        //.populate("thoughts");
-        //.populate("friends")
-
       if (!user) {
         return res.status(404).json({ message: "No user with that ID" });
       }
@@ -107,7 +104,7 @@ module.exports = {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
         //either friends or friend maybe user? since its self reference
-        { $pull: { friends: { _id: req.params.friendId } } },
+        { $pull: { friends: req.params.friendId  } },
         { runValidators: true, new: true }
       );
 
